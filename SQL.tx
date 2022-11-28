@@ -1,0 +1,57 @@
+create database store;
+
+create table countries(
+    code int primary key ,
+    name varchar (20) unique ,
+    continent_name varchar (20) not null
+);
+
+create table users(
+    id int primary key ,
+    full_name varchar (20),
+    email varchar(20) unique ,
+    gender char(1) check ( gender = 'M' or gender = 'F'),
+    date_of_birth varchar(15),
+    created_at datetime,
+    country_code int,
+    foreign key (country_code) references countries(code)
+);
+
+create table orders(
+    id int primary key ,
+    user_id int,
+    status varchar(6) check ( status = 'start' or status = 'finish' ),
+    created_at datetime,
+    foreign key (user_id) references users(id)
+);
+
+create table product(
+    id int primary key ,
+    name varchar(10) not null,
+    price int default 0,
+    status varchar(10) check ( status = 'valid' or status = 'expired' ),
+    created_at datetime default current_timestamp
+);
+
+create table order_products(
+    order_id int,
+    product_id int,
+    quantity int default 0,
+    foreign key (order_id) references orders(id),
+    foreign key (product_id) references product(id)
+);
+
+# DML commands :
+insert into countries values ('1','kwh','times');
+insert into users values ('2','anwar','anwaralanzi6@gmail.com','t','1110895610','2022-09-22','112');
+insert into orders values ('3','333','twiqe','2022-1-21');
+insert into product values ('4','sam','24','valid',default);
+insert into order_products values ('335','222','100');
+
+UPDATE countries set continent_name = 'alanzi' where code = '2';
+DELETE from product where id = '4';
+
+select * from countries;
+select * from users;
+select * from orders;
+select * from order_products;
